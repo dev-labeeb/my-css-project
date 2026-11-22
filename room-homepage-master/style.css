@@ -1,0 +1,241 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white: hsl(0, 100%, 100%);
+  --grey-500: hsl(0, 0%, 63%);
+  --grey-800: hsl(0, 0%, 27%);
+  --black: hsl(0, 0%, 0%);
+}
+
+body {
+  font-family: "League Spartan", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--black);
+  line-height: 1.5;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+/* Hides the checkbox / radio buttons but keeps them working */
+.hidden-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+/* ---------- HEADER (mobile first) ---------- */
+.header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  z-index: 20;
+  height: 6.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
+  color: var(--white);
+}
+
+.logo img { height: 1.25rem; }
+
+.menu-toggle {
+  position: absolute;
+  left: 1.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.icon-close { display: none; }
+
+/* White menu bar (hidden until the checkbox is ticked) */
+.nav {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 1.5rem;
+  background: var(--white);
+  color: var(--black);
+}
+.nav ul { display: flex; gap: 1.5rem; }
+.nav a { position: relative; font-weight: 600; }
+
+/* Little line under a link on hover */
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -0.25rem;
+  width: 1.5rem;
+  height: 2px;
+  background: currentColor;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.nav a:hover::after { opacity: 1; }
+
+/* Dark layer */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+}
+
+/* When the checkbox is ticked: show the menu, the dark layer, swap the icon */
+#menu:checked ~ .header .nav { display: flex; }
+#menu:checked ~ .header .menu-toggle { z-index: 2; }
+#menu:checked ~ .header .icon-open { display: none; }
+#menu:checked ~ .header .icon-close { display: block; }
+#menu:checked ~ .overlay { opacity: 1; visibility: visible; }
+
+/* keyboard users can see where they are */
+#menu:focus-visible ~ .header .menu-toggle { outline: 2px solid currentColor; }
+
+/* ---------- HERO SLIDER ---------- */
+.hero { position: relative; }
+
+/* every slide is hidden, except the one whose radio is ticked */
+.slide {
+  display: none;
+  position: relative;
+  grid-template-columns: 1fr;
+}
+#slide1:checked ~ .slide-1,
+#slide2:checked ~ .slide-2,
+#slide3:checked ~ .slide-3 { display: grid; }
+
+.hero-image img {
+  width: 100%;
+  height: 22.5rem;
+  object-fit: cover;
+}
+
+.hero-content { padding: 3rem 2rem 3.5rem; }
+.hero-content h1 {
+  margin-bottom: 1rem;
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.hero-content p { margin-bottom: 1.75rem; color: var(--grey-500); }
+
+.shop-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.75em;
+  transition: color 0.2s;
+}
+.shop-link:hover { color: var(--grey-500); }
+
+/* Previous / next buttons */
+.slider-controls {
+  position: absolute;
+  top: 22.5rem;
+  right: 0;
+  transform: translateY(-100%);
+  display: flex;
+  background: var(--black);
+}
+.control {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.control:hover { background: var(--grey-800); }
+
+/* keyboard users can see which slide button is selected */
+#slide1:focus-visible ~ .slide-1,
+#slide2:focus-visible ~ .slide-2,
+#slide3:focus-visible ~ .slide-3 { outline: 2px solid var(--grey-500); outline-offset: -2px; }
+
+/* ---------- ABOUT ---------- */
+.about { display: flex; flex-direction: column; }
+.about-img { width: 100%; height: 15rem; object-fit: cover; }
+.about-content { padding: 3rem 2rem; }
+.about-content h2 {
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+}
+.about-content p { color: var(--grey-500); }
+
+.attribution { padding: 1rem; font-size: 0.6875rem; text-align: center; }
+.attribution a { color: hsl(228, 45%, 44%); }
+
+/* ---------- DESKTOP (768px and wider) ---------- */
+@media (min-width: 768px) {
+
+  .header {
+    justify-content: flex-start;
+    gap: 4rem;
+    height: 8.5rem;
+    padding: 0 4rem;
+  }
+  .menu-toggle { display: none; }
+  .overlay { display: none; }
+
+  /* nav becomes a normal row of links next to the logo */
+  .nav {
+    position: static;
+    display: flex;
+    padding: 0;
+    background: none;
+    color: inherit;
+  }
+  .nav ul { gap: 2rem; }
+
+  /* slide = image (left) + text (right) */
+  .slide {
+    grid-template-columns: 7fr 5fr;
+    min-height: 33.375rem;
+  }
+  #slide1:checked ~ .slide-1,
+  #slide2:checked ~ .slide-2,
+  #slide3:checked ~ .slide-3 { display: grid; }
+
+  .hero-image img { height: 100%; min-height: 33.375rem; }
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem clamp(2rem, 6.5vw, 6rem);
+  }
+  .hero-content h1 { font-size: clamp(2.5rem, 3.6vw, 3.4rem); }
+
+  .slider-controls {
+    top: auto;
+    bottom: 0;
+    left: 58.333%;
+    right: auto;
+    transform: none;
+  }
+  .control { width: 5rem; height: 5rem; }
+
+  /* about = 3 columns: image | text | image */
+  .about { display: grid; grid-template-columns: 29fr 40fr 31fr; }
+  .about-img { height: 100%; min-height: 16.5rem; }
+  .about-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem clamp(2rem, 4vw, 4rem);
+  }
+}
